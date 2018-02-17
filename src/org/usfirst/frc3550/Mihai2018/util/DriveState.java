@@ -42,9 +42,9 @@ public class DriveState{
         //formule s=ut+(1/2)(at*t), ou s est la position, u est la vitesse initiale, t est le temps,
         //et a est lacceleration
         double deltaTime = time - this.time;
-        double pos = this.pos + (this.speed * deltaTime) + (accel * deltaTime * deltaTime);
+        double pos = this.position + (this.speed * deltaTime) + (accel * deltaTime * deltaTime);
         double speed = this.speed + (accel * deltaTime);
-        return DriveState(time, accel, pos, speed);
+        return new DriveState(time, accel, pos, speed);
     }
 
     public double timeToPos(double pos){
@@ -63,8 +63,8 @@ public class DriveState{
         //Si le discriminant est 0, la position ne sera jamais atteinte
         if(discriminant < 0)
             return Double.NaN;
-        double deltaTimeMax = (-b + sqrt(discriminant))/(2*a);
-        double deltaTimeMin = (-b - sqrt(discriminant))/(2*a);
+        double deltaTimeMax = (-b + Math.sqrt(discriminant))/(2*a);
+        double deltaTimeMin = (-b - Math.sqrt(discriminant))/(2*a);
         double finalDeltaTime = deltaTimeMin>=0 ? deltaTimeMin : deltaTimeMax;
 
         if(finalDeltaTime < 0){
