@@ -23,6 +23,9 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+
 
 
 /**
@@ -43,6 +46,9 @@ public class DriveTrain extends Subsystem {
     private final SpeedController frontLeft = RobotMap.FrontLeft;
     private final SpeedController frontRight = RobotMap.FrontRight;
     private final DifferentialDrive robotDrive41 = RobotMap.m_drive;
+    private final Encoder LeftEncoder = RobotMap.m_leftEncoder;
+	private final Encoder RightEncoder = RobotMap.m_rightEncoder;
+	private final DoubleSolenoid LeftMotorSolenoid = RobotMap.LeftMotorSolenoid;
    // private final AnalogGyro     gyro         = RobotMap.gyro;
   //  private final Encoder      encoder      =  RobotMap.deplacementleftRearMotor.getPIDSourceType();
 
@@ -254,6 +260,37 @@ public class DriveTrain extends Subsystem {
 		inverseMotors(false);
 		robotDrive41.tankDrive(rightStick*SLOWSPEED, leftStick*SLOWSPEED, SENSITIVITY);
 	}
-    
+
+	public void reset() {
+		LeftEncoder.reset();
+		RightEncoder.reset();
+	}
+	public double getLeftDistance() {
+		return LeftEncoder.getDistance();
+	}
+
+	public double getRightDistance() {
+		return RightEncoder.getDistance();
+	}
+
+	public double getLeftRate() {
+		return LeftEncoder.getDistance();
+	}
+
+	public double getRightRate() {
+		return RightEncoder.getDistance();
+	}
+
+	public double getDistance() {
+		return (LeftEncoder.getDistance() + RightEncoder.getDistance()) / 2;
+	}
+
+	public void speedUp() {
+		LeftMotorSolenoid.set(DoubleSolenoid.Value.kForward);
+	}
+
+	public void slowDown() {
+		LeftMotorSolenoid.set(DoubleSolenoid.Value.kReverse);
+	}
 }
 
