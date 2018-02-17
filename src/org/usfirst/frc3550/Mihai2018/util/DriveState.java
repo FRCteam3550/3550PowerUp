@@ -72,8 +72,8 @@ public class DriveState{
         }
         return finalDeltaTime;
     }
-    public double timeToSpeed(float speed){
-        return speed/accel;
+    public double timeToSpeed(double maxSpeed){
+        return maxSpeed/accel;
     }
     public double speedAtTime(float time){
         return speed + accel*(time - this.time);

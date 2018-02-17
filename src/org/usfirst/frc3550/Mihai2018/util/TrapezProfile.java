@@ -3,6 +3,8 @@ package org.usfirst.frc3550.Mihai2018.util;
 import java.lang.*;
 import java.util.*;
 
+import sun.font.CreatedFontTracker;
+
 public class TrapezProfile{
 
     double slope = 0;
@@ -25,9 +27,6 @@ public class TrapezProfile{
     }
     TrapezProfile(){
     }
-    public void generateProfile(double accelSlope, double distance, double maxSpeed, double currentSpeed){
-        TrapezProfile(accelSlope, distance, maxSpeed, currentSpeed);
-    }
     public MotionProfile getGeneratedProfile(){
         if(generatedProfile.isValid())
             return generatedProfile;
@@ -36,14 +35,14 @@ public class TrapezProfile{
             return generatedProfile;
         }
     }
-    TrapezProfile(double accelSlope, double distance, double maxSpeed, double currentSpeed){
+    public void createTrapezProfile(double accelSlope, double distance, double maxSpeed, double currentSpeed){
         slope = accelSlope;
         this.initialSpeed = currentSpeed;
         this.distance = distance;
         this.maxSpeed = maxSpeed;
         DriveState initialState = new DriveState(0, slope, initialSpeed, 0);
         stateList.add(initialState);
-        accelTriangleSize = stateList.get(0).extrapolate(stateList.get(0).timeToSpeed(maxSpeed));
+        accelTriangleSize = stateList.get(0).extrapolate(stateList.get(0).timeToSpeed(maxSpeed)).position;
         if(distance < 2*accelTriangleSize){
             isCruising = false;
         }
@@ -68,7 +67,13 @@ public class TrapezProfile{
         }
         stateListToMotionProfile();
     }
-
+    TrapezProfile(double accelSlope, double distance, double maxSpeed, double currentSpeed){
+       createTrapezProfile(accelSlope, distance, maxSpeed, currentSpeed);
+    }
+    public MotionProfile generateProfile(double accelSlope, double distance, double maxSpeed, double currentSpeed){
+        createTrapezProfile(accelSlope, distance, maxSpeed, currentSpeed);
+        return this.generatedProfile;
+    }
 //    public double speedAtTime(double time){
 //        DriveState targetDriveState;
 //        for(int i = 1; i<stateList.size(); i++){

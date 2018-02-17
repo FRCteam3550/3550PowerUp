@@ -20,12 +20,13 @@ public class MotionSegment{
             return false;
         if(startState.accel != endState.accel)
             return false;
-        if((startState.speed + (endState.time-startState.time) * startState.accel) != endState.speed)
+        if(isWithinEpsilon((startState.speed + (endState.time-startState.time) * startState.accel) - endState.speed))
             return false;
-        if(startState.extrapolate(endState.time) != endState.position)
+        if(isWithinEpsilon(startState.extrapolate(endState.time).position - endState.position))
             return false;
         if(startState.speed/Math.abs(startState.speed) != endState.speed/Math.abs(endState.speed))
             return false;
+        return true;
     }
 
     public MotionSegment(DriveState startState, DriveState endState){
@@ -33,11 +34,11 @@ public class MotionSegment{
         this.startState = startState;
     }
 
-    public setStart(DriveState startState){
+    public void setStart(DriveState startState){
         this.startState = startState;
     }
 
-    public setEnd(DriveState endState){
+    public void setEnd(DriveState endState){
         this.endState = endState;
     }
 

@@ -5,8 +5,7 @@ import java.util.*;
 public class MotionProfileFollower{
     MotionProfile profile;
     double maxAccel;
-    public stati
-    c double EPSILON_VALUE = 0.0001;
+    public static double EPSILON_VALUE = 0.0001;
 
     public boolean isWithinEpsilon(double o){
         if(Math.abs(o)>EPSILON_VALUE)
@@ -21,7 +20,7 @@ public class MotionProfileFollower{
         profile = currentProfile;
     }
     public double getMotorOutputFB(double distanceTraveled, double time, double speed){
-        DriveState intendedDriveState = profile.DriveStateAtTime(time);
+        DriveState intendedDriveState = profile.driveStateAtTime(time);
         double speedDelta = intendedDriveState.speed - speed;
         double distanceDelta = intendedDriveState.position - distanceTraveled;
         // TODO: Implement PID controller dependent on distance delta and speed delta
@@ -32,12 +31,12 @@ public class MotionProfileFollower{
         return currentState.accel / maxAccel;
     }
     public boolean isFinishedTime(double time){
-        MotionSegment lastSegment = profile.segments.get(profile.segments.size - 1);
+        MotionSegment lastSegment = profile.segments.get(profile.segments.size() - 1);
         DriveState finalDriveState = lastSegment.endState;
         return isWithinEpsilon(finalDriveState.time - time);
     }
     public boolean isFinishedDistance(double pos){
-        MotionSegment lastSegment = profile.segments.get(profile.segments.size - 1);
+        MotionSegment lastSegment = profile.segments.get(profile.segments.size() - 1);
         DriveState finalDriveState = lastSegment.endState;
         return isWithinEpsilon(finalDriveState.position - pos);
     }
